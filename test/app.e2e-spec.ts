@@ -4,7 +4,7 @@ import request from 'supertest';
 import { App } from 'supertest/types.js';
 import { AppModule } from './../src/app.module.js';
 
-describe('AppController (e2e)', () => {
+describe('App (e2e)', () => {
   let app: INestApplication<App>;
 
   beforeEach(async () => {
@@ -16,6 +16,10 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
+  afterEach(async () => {
+    await app.close();
+  });
+
   it('/ (GET)', () => {
     return request(app.getHttpServer())
       .get('/')
@@ -23,7 +27,19 @@ describe('AppController (e2e)', () => {
       .expect('Hello World!');
   });
 
-  afterEach(async () => {
-    await app.close();
+  it('returns the error envelope for an unknown route', () => {
+    return request(app.getHttpServer())
+      .post('/does-not-exist')
+      .expect(404)
+      .expect({ successful: false, error_code: 'NOT_FOUND', data: null });
+  });
+
+  it('returns the error envelope for malformed JSON', () => {
+    return request(app.getHttpServer())
+      .post('/does-not-exist')
+      .set('Content-Type', 'application/json')
+      .send('{"payload":')
+      .expect(400)
+      .expect({ successful: false, error_code: 'INVALID_REQUEST', data: null });
   });
 });
