@@ -1,8 +1,6 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_PIPE } from '@nestjs/core';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
 import { AllExceptionsFilter } from './common/all-exceptions.filter.js';
 import { validateEnv } from './config/env.validation.js';
 import { CryptoModule } from './crypto/crypto.module.js';
@@ -16,9 +14,7 @@ import { CryptoModule } from './crypto/crypto.module.js';
     }),
     CryptoModule,
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_PIPE,
       useFactory: () =>
