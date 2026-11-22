@@ -10,6 +10,7 @@ import { CryptoModule } from './crypto/crypto.module.js';
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
+      envFilePath: '.env',
       validate: validateEnv,
     }),
     CryptoModule,

@@ -15,11 +15,19 @@ npm install
 
 ### 2. Create the environment file
 
+The service reads its configuration from `.env` and will not start without it. Create it from the template, which already holds a demo RSA key pair:
+
 ```bash
 cp .env.example .env
 ```
 
-`.env.example` already contains `PORT` and a demo RSA key pair (`PRIVATE_KEY`, `PUBLIC_KEY`), so the service runs without any changes.
+`.env` must contain:
+
+| Variable | Required | Description |
+|---|---|---|
+| `PORT` | No (default `3000`) | Port the HTTP server listens on |
+| `PRIVATE_KEY` | Yes | RSA private key (PEM) |
+| `PUBLIC_KEY` | Yes | RSA public key (PEM), from the same pair |
 
 ### 3. Start the service
 
